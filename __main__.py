@@ -1,5 +1,5 @@
 import argparse
-from broker_api.client import Client
+from broker_api.client_impl import Client
 
 def run(args):
     client = Client(**args)

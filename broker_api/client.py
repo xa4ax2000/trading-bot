@@ -1,7 +1,11 @@
-from .broker_factory import BrokerFactory
+from abc import ABC, abstractmethod
 
 
-class Client:
+class Client(ABC):
+    """
+        @abstractmethod
+        def get_account(self):
+            pass
+    """
+    pass
 
-    def __init__(self, broker=None):
-        self.broker = BrokerFactory.get_broker(broker)

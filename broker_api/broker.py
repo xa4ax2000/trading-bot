@@ -1,19 +1,23 @@
 from abc import ABC, abstractmethod
+from decorators.abstract_class_attributes import abstract_class_attributes
 
 
-class Broker(ABC):
+@abstract_class_attributes('_api_base_url')
+class BrokerInterface(ABC):
     def __init__(self):
         super().__init__()
 
-    @property
     @abstractmethod
-    def get_url(self, action=None):
+    def get_api(self, action=None):
         pass
 
 
-class Alpaca(Broker):
-    def __init__(self, kwargs):
+class Alpaca(BrokerInterface):
+
+    _api_base_url = 'https://api.alpaca.markets'.rstrip('/')
+
+    def __init__(self):
         super().__init__()
 
-    def get_url(self, action=None):
-        return 'https://api.alpaca.markets'.rstrip('/')
+    def get_api(self, action=None):
+        return self._api_base_url

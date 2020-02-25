@@ -1,5 +1,10 @@
 import argparse
 from broker_api.broker_client import BrokerClient
+"""Interactive console broker client
+
+This script allows the user to access the BrokerClient and interact with the Broker via supported APIs. This script
+requires the `ipython` module to be installed - which could be found in the requirements.txt.
+"""
 
 
 def run(args):

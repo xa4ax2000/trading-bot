@@ -1,8 +1,7 @@
 import argparse
-from broker_api.client_impl import Client
 
 def run(args):
-    client = Client(**args)
+    #client = BrokerClient.__init__(**args)
     try:
         from IPython import embed
         embed()
@@ -13,9 +12,11 @@ def run(args):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--broker', help='The Broker to connect to. Currently only supports Alpaca!')
-    parser.add_argument('--key-id', help='API_KEY_ID')
-    parser.add_argument('--secret-key', help='API_SECRET_KEY')
+    parser.add_argument('--broker', help='The Broker to connect to. Currently only supports Alpaca!', required=True)
+    parser.add_argument('--key-id', help='API_KEY_ID (if supported)')
+    parser.add_argument('--secret-key', help='API_SECRET_KEY (if supported)')
+    parser.add_argument('--username', help='Username (if supported)')
+    parser.add_argument('--password', help='API_SECRET_KEY (if supported)')
     args = parser.parse_args()
 
     run({k: v for k, v in vars(args).items() if v is not None})

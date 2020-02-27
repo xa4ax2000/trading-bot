@@ -1,4 +1,5 @@
 from broker_api.alpaca import Alpaca
+from broker_api.robinhood import Robinhood
 
 
 class BrokerFactory:
@@ -17,7 +18,8 @@ class BrokerFactory:
     """
 
     broker_input_to_class = {
-        'alpaca': Alpaca
+        'alpaca': Alpaca,
+        'robinhood': Robinhood
     }
 
     @classmethod

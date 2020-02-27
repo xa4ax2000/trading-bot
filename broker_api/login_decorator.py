@@ -1,5 +1,28 @@
+from abc import ABC, abstractmethod
 import getpass
-import requests
+
+
+class LoginDecorator(ABC):
+    """
+    Interface to use the login_required decorator
+    """
+
+    @property
+    @abstractmethod
+    def refresh_token(self):
+        """The refresh token obtained from login response"""
+        pass
+
+    @property
+    @abstractmethod
+    def auth_token(self):
+        """The auth token obtained from login response"""
+        pass
+
+    @abstractmethod
+    def _login(self, username, password, mfa_code=None):
+        """Required method to use login_required decorator"""
+        pass
 
 
 def login_required(function):
@@ -9,51 +32,10 @@ def login_required(function):
     """
 
     def wrapper(self, *args, **kwargs):
-        if self._broker.requires_login_credentials and self._auth_token is None:
-            __login_prompt(self)
-        return function(self, *args, **kwargs)  # pylint: disable=E1102
-
+        if self._auth_token is None:
+            """Prompts user for username and password and calls login()"""
+            username = input("Username: ")
+            password = getpass.getpass()
+            self._login(username=username, password=password)
+        return function(self, *args, **kwargs)
     return wrapper
-
-
-def __login_prompt(self):
-    """Prompts user for username and password and calls login() """
-
-    username = input("Username: ")
-    password = getpass.getpass()
-
-    return login(self, username=username, password=password)
-
-
-def login(self, username, password):
-    """Login Logic
-
-    :param self: BrokerClient
-        the BrokerClient object containing attributes
-    :param username: str
-        the username to login with
-    :param password: str
-        the password to login with
-    """
-    broker_request = self.__broker.build_login_broker_request(username, password)
-    try:
-        res = self.__http_session.request(
-            method=broker_request.method.name,
-            url=broker_request.endpoint,
-            data=broker_request.request_body,
-            headers=broker_request.headers,
-            timeout=15
-        )
-        res.raise_for_status()
-        data = res.json()
-    except requests.exceptions.HTTPError:
-        raise LoginFailedError
-
-    if 'access_token' in data.keys() and 'refresh_token' in data.keys():
-        self.__auth_token = data['access_token']
-        self.__refresh_token = data['refresh_token']
-
-
-class LoginFailedError(Exception):
-    """Raised when Login Fails"""
-    pass

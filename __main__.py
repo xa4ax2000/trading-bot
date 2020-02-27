@@ -23,8 +23,6 @@ def main():
                         required=True)
     parser.add_argument('--key-id', help='API_KEY_ID (if supported)')
     parser.add_argument('--secret-key', help='API_SECRET_KEY (if supported)')
-    parser.add_argument('--username', help='Username (if supported)')
-    parser.add_argument('--password', help='Password (if supported)')
     args = parser.parse_args()
 
     run({k: v for k, v in vars(args).items() if v is not None})

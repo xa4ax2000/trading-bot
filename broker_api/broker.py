@@ -155,15 +155,16 @@ class Account(ABC):
         If true, the account is not allowed to place orders.
     """
 
-    def __init__(self, resp):
+    def __init__(self, *responses):
         """
         Parameters
         ----------
-        :param resp : HttpResponse object
+        :param responses : HttpResponse object(s)
             The response returned from the Http Request
         """
-        if resp is None:
-            raise EmptyResponse()
+        for response in responses:
+            if response is None:
+                raise EmptyResponse()
 
     @property
     @abstractmethod
